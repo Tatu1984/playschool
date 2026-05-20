@@ -38,7 +38,7 @@ export default function RootLayout({
       className={`${fredoka.variable} ${nunito.variable} ${baloo.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <TooltipProvider delayDuration={150}>{children}</TooltipProvider>
+        <TooltipProvider delay={150}>{children}</TooltipProvider>
         <Toaster richColors position="top-center" />
       </body>
     </html>

@@ -31,7 +31,7 @@ export function Footer() {
   return (
     <footer className="relative mt-10 bg-ck-navy text-white">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-4">
+        <div className="grid gap-12 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3">
               <Logo size={56} withWordmark={false} />
@@ -70,18 +70,21 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
+          <div className="lg:col-span-2">
             <p className="font-[family-name:var(--font-fredoka)] text-lg font-bold">
               Explore
             </p>
-            <ul className="mt-4 space-y-2 text-sm text-white/70">
+            <ul className="mt-4 grid grid-cols-3 gap-x-4 gap-y-2 text-sm text-white/70">
               {[
-                ["About", "#about"],
-                ["Programs", "#programs"],
-                ["Activities", "#activities"],
-                ["Why Us", "#why"],
-                ["Parents", "#parents"],
-                ["Contact", "#contact"],
+                ["Home", "/"],
+                ["About", "/about"],
+                ["Programs", "/programs"],
+                ["Activities", "/activities"],
+                ["Why Us", "/why-us"],
+                ["Parents", "/parents"],
+                ["FAQ", "/why-us#faq"],
+                ["Admissions", "/contact"],
+                ["Contact", "/contact"],
               ].map(([label, href]) => (
                 <li key={label}>
                   <Link href={href} className="hover:text-ck-orange transition-colors">

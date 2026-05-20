@@ -5,24 +5,18 @@ import { useEffect, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { Menu, Phone } from "lucide-react";
 import { Magnet } from "@/components/reactbits/Magnet";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { label: "About", href: "#about" },
-  { label: "Programs", href: "#programs" },
-  { label: "Activities", href: "#activities" },
-  { label: "Why Us", href: "#why" },
-  { label: "Parents", href: "#parents" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/about" },
+  { label: "Programs", href: "/programs" },
+  { label: "Activities", href: "/activities" },
+  { label: "Why Us", href: "/why-us" },
+  { label: "Parents", href: "/parents" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -47,23 +41,20 @@ export function Navbar() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Logo size={48} />
 
-        <NavigationMenu className="hidden lg:flex">
-          <NavigationMenuList>
-            {NAV.map((n) => (
-              <NavigationMenuItem key={n.href}>
-                <NavigationMenuLink
-                  asChild
-                  className={cn(
-                    navigationMenuTriggerStyle(),
-                    "bg-transparent text-ck-navy hover:text-ck-red hover:bg-ck-cream/60 font-semibold",
-                  )}
-                >
-                  <Link href={n.href}>{n.label}</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
+        <nav className="hidden lg:flex items-center gap-1">
+          {NAV.map((n) => (
+            <Link
+              key={n.href}
+              href={n.href}
+              className={cn(
+                navigationMenuTriggerStyle(),
+                "bg-transparent text-ck-navy hover:text-ck-red hover:bg-ck-cream/60 font-semibold",
+              )}
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
 
         <div className="flex items-center gap-2">
           <a
@@ -78,20 +69,16 @@ export function Navbar() {
               asChild
               className="rounded-full bg-ck-red hover:bg-ck-red/90 font-bold px-6 shadow-[0_6px_0_#9a1a28] hover:shadow-[0_3px_0_#9a1a28] hover:translate-y-[3px] transition-all"
             >
-              <Link href="#contact">Book a Visit</Link>
+              <Link href="/contact">Book a Visit</Link>
             </Button>
           </Magnet>
 
           <Sheet>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="lg:hidden rounded-full"
-                aria-label="Open menu"
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
+            <SheetTrigger
+              aria-label="Open menu"
+              className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-ck-cream/60 transition-colors"
+            >
+              <Menu className="h-5 w-5" />
             </SheetTrigger>
             <SheetContent className="w-80 px-6 py-8">
               <SheetTitle className="sr-only">Menu</SheetTitle>
@@ -120,7 +107,7 @@ export function Navbar() {
                   asChild
                   className="w-full rounded-full bg-ck-red hover:bg-ck-red/90"
                 >
-                  <Link href="#contact">Book a Visit</Link>
+                  <Link href="/contact">Book a Visit</Link>
                 </Button>
               </div>
             </SheetContent>

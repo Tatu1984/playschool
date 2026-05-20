@@ -1,6 +1,12 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useRef } from "react";
 
@@ -37,6 +43,10 @@ export function TiltedCard({
     y.set(0);
   };
 
+  const glareX = useTransform(x, (v) => 50 + v * 80);
+  const glareY = useTransform(y, (v) => 50 + v * 80);
+  const glareBg = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.55), transparent 55%)`;
+
   return (
     <motion.div
       ref={ref}
@@ -52,13 +62,7 @@ export function TiltedCard({
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0 rounded-[inherit] mix-blend-overlay"
-          style={{
-            background: useTransform(
-              [x, y] as unknown as [number, number],
-              ([lx, ly]: number[]) =>
-                `radial-gradient(circle at ${50 + lx * 80}% ${50 + ly * 80}%, rgba(255,255,255,0.55), transparent 55%)`,
-            ),
-          }}
+          style={{ background: glareBg }}
         />
       )}
     </motion.div>

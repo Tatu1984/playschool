@@ -49,11 +49,10 @@ export function Faq() {
           </h2>
         </div>
 
-        <Accordion type="single" collapsible className="mt-10 space-y-3">
+        <Accordion className="mt-10 space-y-3">
           {FAQS.map((f, i) => (
             <AccordionItem
               key={i}
-              value={`item-${i}`}
               className="rounded-2xl border-0 bg-white px-5 shadow-[0_4px_18px_rgba(26,31,75,0.06)]"
             >
               <AccordionTrigger className="py-5 font-[family-name:var(--font-fredoka)] text-lg font-semibold text-ck-navy hover:no-underline">
