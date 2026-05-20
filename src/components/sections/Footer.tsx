@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { Separator } from "@/components/ui/separator";
-import { Phone, Mail } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 
 function Instagram({ className }: { className?: string }) {
   return (
@@ -82,8 +82,11 @@ export function Footer() {
                 ["Activities", "/activities"],
                 ["Abacus", "/abacus"],
                 ["Teachers Training", "/teachers-training"],
+                ["Gallery", "/gallery"],
                 ["Why Us", "/why-us"],
                 ["Parents", "/parents"],
+                ["FAQ", "/why-us"],
+                ["Admissions", "/contact"],
                 ["Contact", "/contact"],
               ].map(([label, href]) => (
                 <li key={label}>
@@ -117,6 +120,16 @@ export function Footer() {
                 <a href="mailto:hello@climbkiddo.in" className="hover:text-white">
                   hello@climbkiddo.in
                 </a>
+              </li>
+              <li className="flex items-start gap-2 pt-2">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-ck-orange" />
+                <span>
+                  Kathgola Branch
+                  <br />
+                  Dhakuria Branch
+                  <br />
+                  <span className="text-white/50">Kolkata</span>
+                </span>
               </li>
             </ul>
           </div>

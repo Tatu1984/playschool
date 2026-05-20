@@ -10,6 +10,7 @@ import { Aurora } from "@/components/reactbits/Aurora";
 import {
   Palette, Music, Bike, Dumbbell, Drama, Sparkles, Trees,
   ChefHat, Drum, Wand2, Brush, Puzzle, Award, BadgeCheck, Music2,
+  Shield, Activity, Hand,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -25,7 +26,9 @@ const ACTIVITY_GROUPS = [
     items: [
       { icon: Drama, label: "Dance", body: "Move, groove and perform — every age, every level." },
       { icon: Palette, label: "Art", body: "Painting, drawing and craft for little hands of all sizes." },
-      { icon: Dumbbell, label: "Martial Art", body: "Discipline, confidence and self-defence basics for every kid." },
+      { icon: Dumbbell, label: "Taekwondo", body: "Belt-by-belt progression, focus and respect — taught the joyful way." },
+      { icon: Shield, label: "Self Defence", body: "Practical, confidence-building techniques every kid should know." },
+      { icon: Activity, label: "Gymnastics", body: "Balance, flexibility, strength and a whole lot of brave little leaps." },
     ],
   },
   {
@@ -95,29 +98,30 @@ export default function ActivitiesPage() {
 
               <div>
                 <Badge className="rounded-full bg-white/15 backdrop-blur text-white font-bold px-3 hover:bg-white/25">
-                  Official Certification Pathway
+                  Examination Facilities
                 </Badge>
                 <h3 className="mt-3 font-[family-name:var(--font-fredoka)] text-3xl sm:text-4xl font-bold leading-tight">
                   Bangiya Sangeet Parishad{" "}
                   <GradientText>Certification</GradientText>
                 </h3>
                 <p className="mt-3 max-w-2xl text-white/85 leading-relaxed">
-                  Climb Kiddo prepares students for the prestigious{" "}
+                  Climb Kiddo is a recognised examination centre under the{" "}
                   <strong className="text-ck-orange">
                     Bangiya Sangeet Parishad
                   </strong>{" "}
-                  examinations — the recognised certification body for Indian
-                  classical music and dance. Trained instructors, structured
-                  syllabus, real certificates that follow your child for life.
+                  — the trusted body for Indian classical music, dance and fine
+                  arts certification. Real certificates that follow your child
+                  for life.
                 </p>
               </div>
 
               <ul className="flex flex-col gap-2.5 text-sm font-semibold text-white">
                 {[
-                  "Vocal & Instrumental tracks",
-                  "Classical & Folk Dance",
-                  "Annual exam coaching",
-                  "Certificates at every grade",
+                  "Painting",
+                  "Dance (Kathak, Fusion)",
+                  "Singing",
+                  "Instruments",
+                  "Art & Craft",
                 ].map((p) => (
                   <li
                     key={p}

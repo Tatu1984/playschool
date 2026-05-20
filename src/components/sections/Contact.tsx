@@ -75,15 +75,16 @@ export function Contact() {
                   </div>
                 </a>
 
-                <div className="flex items-center gap-4 rounded-2xl bg-white/10 backdrop-blur p-4">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-ck-blue shadow-md">
+                <div className="flex items-start gap-4 rounded-2xl bg-white/10 backdrop-blur p-4">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ck-blue shadow-md">
                     <MapPin className="h-5 w-5" />
                   </span>
-                  <div>
+                  <div className="space-y-1">
                     <p className="text-xs uppercase tracking-wider text-white/60 font-bold">
-                      Visit us
+                      Two branches in Kolkata
                     </p>
-                    <p className="font-bold">Climb Kiddo Campus, Kolkata</p>
+                    <p className="font-bold">Kathgola Branch</p>
+                    <p className="font-bold">Dhakuria Branch</p>
                   </div>
                 </div>
               </div>

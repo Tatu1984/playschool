@@ -16,6 +16,7 @@ const NAV = [
   { label: "Activities", href: "/activities" },
   { label: "Abacus", href: "/abacus" },
   { label: "Teachers Training", href: "/teachers-training" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Why Us", href: "/why-us" },
   { label: "Parents", href: "/parents" },
   { label: "Contact", href: "/contact" },
