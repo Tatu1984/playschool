@@ -18,7 +18,7 @@ export default function WhyUsPage() {
         highlight="kids really thrive"
         description="Six things parents tell us they couldn't find anywhere else — and the numbers behind why families stay."
       />
-      <WhyUs />
+      <WhyUs showHeading={false} />
       <Faq />
     </>
   );

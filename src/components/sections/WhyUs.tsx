@@ -62,22 +62,24 @@ const STATS = [
   { value: 6, suffix: "yrs", label: "Of joyful learning", color: "#8BC53F" },
 ];
 
-export function WhyUs() {
+export function WhyUs({ showHeading = true }: { showHeading?: boolean }) {
   return (
     <section id="why" className="relative py-20 sm:py-28 overflow-hidden">
       <Squares className="opacity-60" />
       <DotGrid className="opacity-50" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto">
-          <Badge variant="secondary" className="rounded-full bg-ck-cream text-ck-navy font-bold px-4">
-            Why parents choose us
-          </Badge>
-          <h2 className="mt-5 font-[family-name:var(--font-fredoka)] text-4xl sm:text-5xl font-bold text-ck-navy">
-            A home away from home where{" "}
-            <GradientText>kids really thrive</GradientText>
-          </h2>
-        </div>
+        {showHeading && (
+          <div className="text-center max-w-2xl mx-auto">
+            <Badge variant="secondary" className="rounded-full bg-ck-cream text-ck-navy font-bold px-4">
+              Why parents choose us
+            </Badge>
+            <h2 className="mt-5 font-[family-name:var(--font-fredoka)] text-4xl sm:text-5xl font-bold text-ck-navy">
+              A home away from home where{" "}
+              <GradientText>kids really thrive</GradientText>
+            </h2>
+          </div>
+        )}
 
         <AnimatedList
           className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4"

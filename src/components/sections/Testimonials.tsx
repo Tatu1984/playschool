@@ -46,19 +46,21 @@ const TESTIMONIALS = [
   },
 ];
 
-export function Testimonials() {
+export function Testimonials({ showHeading = true }: { showHeading?: boolean }) {
   return (
     <section id="parents" className="relative py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto">
-          <Badge variant="secondary" className="rounded-full bg-ck-cream text-ck-navy font-bold px-4">
-            Parent stories
-          </Badge>
-          <h2 className="mt-5 font-[family-name:var(--font-fredoka)] text-4xl sm:text-5xl font-bold text-ck-navy">
-            Loved by little climbers &{" "}
-            <GradientText>their grown-ups</GradientText>
-          </h2>
-        </div>
+        {showHeading && (
+          <div className="text-center max-w-2xl mx-auto">
+            <Badge variant="secondary" className="rounded-full bg-ck-cream text-ck-navy font-bold px-4">
+              Parent stories
+            </Badge>
+            <h2 className="mt-5 font-[family-name:var(--font-fredoka)] text-4xl sm:text-5xl font-bold text-ck-navy">
+              Loved by little climbers &{" "}
+              <GradientText>their grown-ups</GradientText>
+            </h2>
+          </div>
+        )}
 
         <Carousel
           opts={{ align: "start", loop: true }}

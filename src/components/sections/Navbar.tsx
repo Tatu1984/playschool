@@ -14,6 +14,8 @@ const NAV = [
   { label: "About", href: "/about" },
   { label: "Programs", href: "/programs" },
   { label: "Activities", href: "/activities" },
+  { label: "Abacus", href: "/abacus" },
+  { label: "Teachers Training", href: "/teachers-training" },
   { label: "Why Us", href: "/why-us" },
   { label: "Parents", href: "/parents" },
   { label: "Contact", href: "/contact" },
@@ -41,7 +43,7 @@ export function Navbar() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Logo size={48} />
 
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden xl:flex items-center gap-0.5">
           {NAV.map((n) => (
             <Link
               key={n.href}
@@ -76,7 +78,7 @@ export function Navbar() {
           <Sheet>
             <SheetTrigger
               aria-label="Open menu"
-              className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-ck-cream/60 transition-colors"
+              className="xl:hidden inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-ck-cream/60 transition-colors"
             >
               <Menu className="h-5 w-5" />
             </SheetTrigger>

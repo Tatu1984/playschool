@@ -19,7 +19,7 @@ export default function ParentsPage() {
         highlight="their grown-ups"
         description="Honest stories from real Climb Kiddo families — and answers to every question you might have."
       />
-      <Testimonials />
+      <Testimonials showHeading={false} />
       <Faq />
       <Contact />
     </>

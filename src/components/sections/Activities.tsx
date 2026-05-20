@@ -33,23 +33,25 @@ const ACTIVITIES = [
   { label: "Music Circles", icon: Music, color: "#D4318F" },
 ];
 
-export function Activities() {
+export function Activities({ showHeading = true }: { showHeading?: boolean }) {
   return (
     <section id="activities" className="relative py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-        <Badge variant="secondary" className="rounded-full bg-ck-cream text-ck-navy font-bold px-4">
-          A day at Climb Kiddo
-        </Badge>
-        <h2 className="mt-5 font-[family-name:var(--font-fredoka)] text-4xl sm:text-5xl font-bold text-ck-navy">
-          Twelve happy ways to <GradientText>learn & play</GradientText>
-        </h2>
-        <p className="mt-4 text-ck-navy/70 max-w-2xl mx-auto">
-          From quiet story corners to noisy drum circles — every day is a brand
-          new adventure.
-        </p>
-      </div>
+      {showHeading && (
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+          <Badge variant="secondary" className="rounded-full bg-ck-cream text-ck-navy font-bold px-4">
+            A day at Climb Kiddo
+          </Badge>
+          <h2 className="mt-5 font-[family-name:var(--font-fredoka)] text-4xl sm:text-5xl font-bold text-ck-navy">
+            Twelve happy ways to <GradientText>learn & play</GradientText>
+          </h2>
+          <p className="mt-4 text-ck-navy/70 max-w-2xl mx-auto">
+            From quiet story corners to noisy drum circles — every day is a brand
+            new adventure.
+          </p>
+        </div>
+      )}
 
-      <div className="mt-12 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+      <div className={`${showHeading ? "mt-12" : ""} [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]`}>
         <Marquee>
           {ACTIVITIES.map((a) => {
             const Icon = a.icon;

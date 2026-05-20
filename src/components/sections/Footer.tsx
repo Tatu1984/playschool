@@ -80,10 +80,10 @@ export function Footer() {
                 ["About", "/about"],
                 ["Programs", "/programs"],
                 ["Activities", "/activities"],
+                ["Abacus", "/abacus"],
+                ["Teachers Training", "/teachers-training"],
                 ["Why Us", "/why-us"],
                 ["Parents", "/parents"],
-                ["FAQ", "/why-us#faq"],
-                ["Admissions", "/contact"],
                 ["Contact", "/contact"],
               ].map(([label, href]) => (
                 <li key={label}>

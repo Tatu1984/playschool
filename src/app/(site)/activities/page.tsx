@@ -19,6 +19,15 @@ export const metadata: Metadata = {
 
 const ACTIVITY_GROUPS = [
   {
+    title: "For all ages",
+    color: "#DC2638",
+    items: [
+      { icon: Drama, label: "Dance", body: "Move, groove and perform — every age, every level." },
+      { icon: Palette, label: "Art", body: "Painting, drawing and craft for little hands of all sizes." },
+      { icon: Dumbbell, label: "Martial Art", body: "Discipline, confidence and self-defence basics for every kid." },
+    ],
+  },
+  {
     title: "Creative Arts",
     color: "#D4318F",
     items: [
@@ -66,7 +75,7 @@ export default function ActivitiesPage() {
         description="From quiet story corners to loud drum circles — every day at Climb Kiddo is a brand new adventure."
       />
 
-      <Activities />
+      <Activities showHeading={false} />
 
       <section className="py-12 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">

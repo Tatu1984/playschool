@@ -75,23 +75,25 @@ const PROGRAMS = [
   },
 ];
 
-export function Programs() {
+export function Programs({ showHeading = true }: { showHeading?: boolean }) {
   return (
     <section id="programs" className="relative py-20 sm:py-28 bg-white/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <Badge variant="secondary" className="rounded-full bg-ck-cream text-ck-navy font-bold px-4">
-            Programs · Curriculum
-          </Badge>
-          <h2 className="mt-5 font-[family-name:var(--font-fredoka)] text-4xl sm:text-5xl font-bold text-ck-navy">
-            A program for{" "}
-            <GradientText>every little age</GradientText>
-          </h2>
-          <p className="mt-4 text-ck-navy/70">
-            Carefully crafted milestones — so every climb up the ladder feels
-            joyful and confident.
-          </p>
-        </div>
+        {showHeading && (
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <Badge variant="secondary" className="rounded-full bg-ck-cream text-ck-navy font-bold px-4">
+              Programs · Curriculum
+            </Badge>
+            <h2 className="mt-5 font-[family-name:var(--font-fredoka)] text-4xl sm:text-5xl font-bold text-ck-navy">
+              A program for{" "}
+              <GradientText>every little age</GradientText>
+            </h2>
+            <p className="mt-4 text-ck-navy/70">
+              Carefully crafted milestones — so every climb up the ladder feels
+              joyful and confident.
+            </p>
+          </div>
+        )}
 
         <Tabs defaultValue="toddlers" className="mt-8">
           <TabsList className="mx-auto flex h-auto w-fit max-w-full flex-wrap justify-center gap-2 rounded-full bg-ck-cream/60 p-2">

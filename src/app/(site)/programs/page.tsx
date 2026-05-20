@@ -18,7 +18,7 @@ export default function ProgramsPage() {
         highlight="every little age"
         description="Carefully crafted milestones from 1.5 to 5.5 years — plus summer camps and weekend workshops kids beg to come back to."
       />
-      <Programs />
+      <Programs showHeading={false} />
       <Contact />
     </>
   );
