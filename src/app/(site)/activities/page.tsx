@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { AnimatedList, AnimatedItem } from "@/components/reactbits/AnimatedList";
 import { TiltedCard } from "@/components/reactbits/TiltedCard";
 import { GradientText } from "@/components/reactbits/GradientText";
+import { Aurora } from "@/components/reactbits/Aurora";
 import {
   Palette, Music, Bike, Dumbbell, Drama, Sparkles, Trees,
   ChefHat, Drum, Wand2, Brush, Puzzle, Award, BadgeCheck, Music2,
@@ -79,28 +80,21 @@ export default function ActivitiesPage() {
 
       <section className="py-8 sm:py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Card className="relative overflow-hidden rounded-[2rem] border-0 bg-gradient-to-br from-ck-magenta via-ck-red to-ck-orange text-white shadow-[0_20px_50px_rgba(220,38,56,0.25)]">
-            <div
-              aria-hidden
-              className="absolute -top-16 -right-16 h-64 w-64 rounded-full bg-white/15 blur-3xl"
-            />
-            <div
-              aria-hidden
-              className="absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-white/10 blur-3xl"
-            />
+          <Card className="relative overflow-hidden rounded-[2rem] border-0 bg-ck-navy text-white shadow-[0_20px_50px_rgba(26,31,75,0.25)]">
+            <Aurora className="opacity-40" />
 
             <CardContent className="relative grid gap-8 p-8 sm:p-12 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-12">
               <div className="flex items-center gap-4">
-                <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur ring-2 ring-white/30">
+                <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-ck-magenta shadow-lg">
                   <Music2 className="h-8 w-8" />
                 </span>
-                <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur ring-2 ring-white/30">
+                <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-ck-orange shadow-lg">
                   <Award className="h-8 w-8" />
                 </span>
               </div>
 
               <div>
-                <Badge className="rounded-full bg-white/20 text-white font-bold px-3 hover:bg-white/30">
+                <Badge className="rounded-full bg-white/15 backdrop-blur text-white font-bold px-3 hover:bg-white/25">
                   Official Certification Pathway
                 </Badge>
                 <h3 className="mt-3 font-[family-name:var(--font-fredoka)] text-3xl sm:text-4xl font-bold leading-tight">
@@ -109,22 +103,27 @@ export default function ActivitiesPage() {
                 </h3>
                 <p className="mt-3 max-w-2xl text-white/85 leading-relaxed">
                   Climb Kiddo prepares students for the prestigious{" "}
-                  <strong>Bangiya Sangeet Parishad</strong> examinations — the
-                  recognised certification body for Indian classical music and
-                  dance. Trained instructors, structured syllabus, real
-                  certificates that follow your child for life.
+                  <strong className="text-ck-orange">
+                    Bangiya Sangeet Parishad
+                  </strong>{" "}
+                  examinations — the recognised certification body for Indian
+                  classical music and dance. Trained instructors, structured
+                  syllabus, real certificates that follow your child for life.
                 </p>
               </div>
 
-              <ul className="flex flex-col gap-2 text-sm font-semibold text-white">
+              <ul className="flex flex-col gap-2.5 text-sm font-semibold text-white">
                 {[
                   "Vocal & Instrumental tracks",
                   "Classical & Folk Dance",
                   "Annual exam coaching",
                   "Certificates at every grade",
                 ].map((p) => (
-                  <li key={p} className="flex items-center gap-2">
-                    <BadgeCheck className="h-4 w-4 shrink-0 text-white" />
+                  <li
+                    key={p}
+                    className="flex items-center gap-2 rounded-full bg-white/10 backdrop-blur px-3 py-1.5"
+                  >
+                    <BadgeCheck className="h-4 w-4 shrink-0 text-ck-orange" />
                     {p}
                   </li>
                 ))}
