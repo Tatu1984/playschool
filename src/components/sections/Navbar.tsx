@@ -66,7 +66,7 @@ export function Navbar() {
             <Phone className="h-4 w-4 text-ck-red" />
             70037 08969
           </a>
-          <Magnet>
+          <Magnet className="hidden sm:inline-block">
             <Button
               asChild
               className="rounded-full bg-ck-red hover:bg-ck-red/90 font-bold px-6 shadow-[0_6px_0_#9a1a28] hover:shadow-[0_3px_0_#9a1a28] hover:translate-y-[3px] transition-all"

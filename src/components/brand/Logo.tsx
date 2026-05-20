@@ -14,10 +14,11 @@ export function Logo({
   return (
     <Link
       href="/"
-      className={cn("flex items-center gap-3 group", className)}
+      aria-label="Climb Kiddo home"
+      className={cn("flex items-center gap-2.5 sm:gap-3 group min-w-0", className)}
     >
       <span
-        className="relative inline-block overflow-hidden rounded-full ring-2 ring-ck-cream shadow-md transition-transform group-hover:rotate-[10deg]"
+        className="relative shrink-0 inline-block overflow-hidden rounded-full ring-2 ring-ck-cream shadow-md transition-transform group-hover:rotate-[10deg]"
         style={{ width: size, height: size }}
       >
         <Image
@@ -30,11 +31,11 @@ export function Logo({
         />
       </span>
       {withWordmark && (
-        <span className="flex flex-col leading-none">
-          <span className="font-[family-name:var(--font-fredoka)] text-xl font-bold text-ck-orange">
+        <span className="flex flex-col leading-none min-w-0">
+          <span className="font-[family-name:var(--font-fredoka)] text-lg sm:text-xl font-bold text-ck-orange truncate">
             Climb Kiddo
           </span>
-          <span className="text-[10px] font-semibold tracking-widest text-ck-navy/70">
+          <span className="hidden sm:block mt-1 text-[10px] font-semibold tracking-widest text-ck-navy/70 whitespace-nowrap">
             DAYCARE · PLAYSCHOOL · KIDS ACTIVITY
           </span>
         </span>
