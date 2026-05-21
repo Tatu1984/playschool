@@ -1,26 +1,109 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
-import { Menu, Phone } from "lucide-react";
+import { Menu, Phone, ChevronDown } from "lucide-react";
 import { Magnet } from "@/components/reactbits/Magnet";
 import { cn } from "@/lib/utils";
 
-const NAV = [
+type NavLeaf = { label: string; href: string };
+type NavGroup = { label: string; children: NavLeaf[] };
+type NavItem = NavLeaf | NavGroup;
+
+const isGroup = (n: NavItem): n is NavGroup => "children" in n;
+
+const NAV: NavItem[] = [
   { label: "About", href: "/about" },
-  { label: "Programs", href: "/programs" },
-  { label: "Activities", href: "/activities" },
-  { label: "Abacus", href: "/abacus" },
-  { label: "Teachers Training", href: "/teachers-training" },
-  { label: "Gallery", href: "/gallery" },
+  {
+    label: "Programs",
+    children: [
+      { label: "Programs", href: "/programs" },
+      { label: "Activities", href: "/activities" },
+      { label: "Abacus", href: "/abacus" },
+      { label: "Teachers Training", href: "/teachers-training" },
+    ],
+  },
   { label: "Why Us", href: "/why-us" },
   { label: "Parents", href: "/parents" },
-  { label: "Contact", href: "/contact" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Contact Us", href: "/contact" },
 ];
+
+function NavDropdown({ group }: { group: NavGroup }) {
+  const [open, setOpen] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const show = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpen(true);
+  };
+  const hide = () => {
+    timeoutRef.current = setTimeout(() => setOpen(false), 120);
+  };
+
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (!wrapperRef.current?.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
+
+  return (
+    <div
+      ref={wrapperRef}
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      className="relative"
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className={cn(
+          navigationMenuTriggerStyle(),
+          "bg-transparent text-ck-navy hover:text-ck-red hover:bg-ck-cream/60 font-semibold gap-1",
+          open && "text-ck-red bg-ck-cream/60",
+        )}
+      >
+        {group.label}
+        <ChevronDown
+          className={cn(
+            "h-3.5 w-3.5 transition-transform",
+            open && "rotate-180",
+          )}
+        />
+      </button>
+
+      <div
+        className={cn(
+          "absolute left-1/2 top-full -translate-x-1/2 pt-2 transition-all",
+          open
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 -translate-y-1 pointer-events-none",
+        )}
+      >
+        <div className="min-w-[14rem] rounded-2xl bg-white p-2 shadow-[0_18px_40px_rgba(26,31,75,0.12)] ring-1 ring-ck-navy/5">
+          {group.children.map((c) => (
+            <Link
+              key={c.href}
+              href={c.href}
+              onClick={() => setOpen(false)}
+              className="block rounded-xl px-3 py-2.5 text-sm font-semibold text-ck-navy hover:bg-ck-cream hover:text-ck-red"
+            >
+              {c.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -44,19 +127,23 @@ export function Navbar() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Logo size={48} />
 
-        <nav className="hidden xl:flex items-center gap-0.5">
-          {NAV.map((n) => (
-            <Link
-              key={n.href}
-              href={n.href}
-              className={cn(
-                navigationMenuTriggerStyle(),
-                "bg-transparent text-ck-navy hover:text-ck-red hover:bg-ck-cream/60 font-semibold",
-              )}
-            >
-              {n.label}
-            </Link>
-          ))}
+        <nav className="hidden lg:flex items-center gap-0.5">
+          {NAV.map((n) =>
+            isGroup(n) ? (
+              <NavDropdown key={n.label} group={n} />
+            ) : (
+              <Link
+                key={n.href}
+                href={n.href}
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  "bg-transparent text-ck-navy hover:text-ck-red hover:bg-ck-cream/60 font-semibold",
+                )}
+              >
+                {n.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="flex items-center gap-2">
@@ -79,25 +166,42 @@ export function Navbar() {
           <Sheet>
             <SheetTrigger
               aria-label="Open menu"
-              className="xl:hidden inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-ck-cream/60 transition-colors"
+              className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-ck-cream/60 transition-colors"
             >
               <Menu className="h-5 w-5" />
             </SheetTrigger>
-            <SheetContent className="w-80 px-6 py-8">
+            <SheetContent className="w-80 px-6 py-8 overflow-y-auto">
               <SheetTitle className="sr-only">Menu</SheetTitle>
               <div className="mb-8">
                 <Logo size={42} />
               </div>
-              <nav className="flex flex-col gap-2">
-                {NAV.map((n) => (
-                  <Link
-                    key={n.href}
-                    href={n.href}
-                    className="rounded-xl px-3 py-3 text-base font-semibold text-ck-navy hover:bg-ck-cream"
-                  >
-                    {n.label}
-                  </Link>
-                ))}
+              <nav className="flex flex-col gap-1">
+                {NAV.map((n) =>
+                  isGroup(n) ? (
+                    <div key={n.label} className="mt-2">
+                      <p className="px-3 pt-2 pb-1 text-xs font-bold uppercase tracking-widest text-ck-navy/50">
+                        {n.label}
+                      </p>
+                      {n.children.map((c) => (
+                        <Link
+                          key={c.href}
+                          href={c.href}
+                          className="block rounded-xl px-3 py-2.5 text-base font-semibold text-ck-navy hover:bg-ck-cream"
+                        >
+                          {c.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <Link
+                      key={n.href}
+                      href={n.href}
+                      className="rounded-xl px-3 py-3 text-base font-semibold text-ck-navy hover:bg-ck-cream"
+                    >
+                      {n.label}
+                    </Link>
+                  ),
+                )}
               </nav>
               <div className="mt-8 space-y-3">
                 <a
