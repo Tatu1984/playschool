@@ -105,6 +105,48 @@ function NavDropdown({ group }: { group: NavGroup }) {
   );
 }
 
+function MobileGroup({ group }: { group: NavGroup }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rounded-xl">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className={cn(
+          "flex w-full items-center justify-between rounded-xl px-3 py-3 text-base font-semibold text-ck-navy hover:bg-ck-cream",
+          open && "bg-ck-cream/70",
+        )}
+      >
+        <span>{group.label}</span>
+        <ChevronDown
+          className={cn("h-4 w-4 transition-transform", open && "rotate-180")}
+        />
+      </button>
+      <div
+        className={cn(
+          "grid transition-all duration-200",
+          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+        )}
+      >
+        <div className="overflow-hidden">
+          <div className="mt-1 ml-3 border-l-2 border-ck-cream pl-3 flex flex-col">
+            {group.children.map((c) => (
+              <Link
+                key={c.href}
+                href={c.href}
+                className="block rounded-xl px-3 py-2 text-sm font-semibold text-ck-navy/85 hover:bg-ck-cream hover:text-ck-navy"
+              >
+                {c.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -178,20 +220,7 @@ export function Navbar() {
               <nav className="flex flex-col gap-1">
                 {NAV.map((n) =>
                   isGroup(n) ? (
-                    <div key={n.label} className="mt-2">
-                      <p className="px-3 pt-2 pb-1 text-xs font-bold uppercase tracking-widest text-ck-navy/50">
-                        {n.label}
-                      </p>
-                      {n.children.map((c) => (
-                        <Link
-                          key={c.href}
-                          href={c.href}
-                          className="block rounded-xl px-3 py-2.5 text-base font-semibold text-ck-navy hover:bg-ck-cream"
-                        >
-                          {c.label}
-                        </Link>
-                      ))}
-                    </div>
+                    <MobileGroup key={n.label} group={n} />
                   ) : (
                     <Link
                       key={n.href}
