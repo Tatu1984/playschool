@@ -26,7 +26,6 @@ export const metadata: Metadata = {
   title: "Climb Kiddo — Daycare · Playschool · Kids Activity",
   description:
     "Climb Kiddo is a warm, safe, playful daycare, playschool and kids activity centre — built for curious little climbers.",
-  icons: { icon: "/brand/logo.jpeg" },
 };
 
 export default function RootLayout({
