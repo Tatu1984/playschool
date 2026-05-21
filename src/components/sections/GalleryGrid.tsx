@@ -1,8 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import { ImageIcon, Video, Sparkles, Filter } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ImageIcon,
+  Video,
+  Sparkles,
+  Filter,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -30,10 +38,46 @@ export function GalleryGrid({
   configured: boolean;
 }) {
   const [filter, setFilter] = useState<string>("all");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [slideDir, setSlideDir] = useState<1 | -1>(1);
   const visible = useMemo(
     () => (filter === "all" ? items : items.filter((i) => i.category === filter)),
     [items, filter],
   );
+
+  const openAt = useCallback((index: number) => {
+    setSlideDir(1);
+    setLightboxIndex(index);
+  }, []);
+  const close = useCallback(() => setLightboxIndex(null), []);
+  const goNext = useCallback(() => {
+    setSlideDir(1);
+    setLightboxIndex((i) =>
+      i === null ? null : (i + 1) % visible.length,
+    );
+  }, [visible.length]);
+  const goPrev = useCallback(() => {
+    setSlideDir(-1);
+    setLightboxIndex((i) =>
+      i === null ? null : (i - 1 + visible.length) % visible.length,
+    );
+  }, [visible.length]);
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowRight") goNext();
+      else if (e.key === "ArrowLeft") goPrev();
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [lightboxIndex, close, goNext, goPrev]);
 
   if (!configured) {
     return (
@@ -121,13 +165,20 @@ export function GalleryGrid({
                   className="block w-full bg-ck-navy"
                 />
               ) : (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={it.url}
-                  alt={it.caption}
-                  loading="lazy"
-                  className="block w-full transition-transform duration-500 group-hover:scale-105"
-                />
+                <button
+                  type="button"
+                  onClick={() => openAt(i)}
+                  className="block w-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-ck-red"
+                  aria-label={it.caption ? `Open ${it.caption}` : "Open image"}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={it.url}
+                    alt={it.caption}
+                    loading="lazy"
+                    className="block w-full transition-transform duration-500 group-hover:scale-105"
+                  />
+                </button>
               )}
               <Badge
                 className="absolute left-2 top-2 rounded-full bg-white/90 backdrop-blur text-ck-navy font-bold gap-1"
@@ -149,6 +200,104 @@ export function GalleryGrid({
           );
         })}
       </div>
+
+      <AnimatePresence>
+        {lightboxIndex !== null && visible[lightboxIndex] && (
+          <motion.div
+            key="lightbox"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-ck-navy/90 backdrop-blur-sm p-4 sm:p-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={close}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Image viewer"
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                close();
+              }}
+              className="absolute right-4 top-4 z-10 rounded-full bg-white/90 p-2 text-ck-navy shadow-lg transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              aria-label="Close"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {visible.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goPrev();
+                  }}
+                  className="absolute left-2 sm:left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 text-ck-navy shadow-lg transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goNext();
+                  }}
+                  className="absolute right-2 sm:right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 text-ck-navy shadow-lg transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              </>
+            )}
+
+            <div
+              className="relative flex h-full w-full max-w-6xl items-center justify-center overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <AnimatePresence initial={false} mode="wait" custom={slideDir}>
+                <motion.div
+                  key={visible[lightboxIndex].id}
+                  className="flex flex-col items-center justify-center"
+                  custom={slideDir}
+                  initial={{ opacity: 0, x: slideDir * 80, scale: 0.96 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: slideDir * -80, scale: 0.96 }}
+                  transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.2}
+                  onDragEnd={(_, info) => {
+                    if (info.offset.x < -80) goNext();
+                    else if (info.offset.x > 80) goPrev();
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={visible[lightboxIndex].url}
+                    alt={visible[lightboxIndex].caption}
+                    draggable={false}
+                    className="max-h-[80vh] max-w-full rounded-2xl object-contain shadow-2xl select-none"
+                  />
+                  {visible[lightboxIndex].caption && (
+                    <p className="mt-4 max-w-2xl text-center text-sm font-semibold text-white/90">
+                      {visible[lightboxIndex].caption}
+                    </p>
+                  )}
+                  {visible.length > 1 && (
+                    <p className="mt-2 text-xs text-white/60">
+                      {lightboxIndex + 1} / {visible.length}
+                    </p>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
