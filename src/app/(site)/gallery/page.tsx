@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "Photos and videos from a day at Climb Kiddo — classroom moments, performances and milestones.",
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function GalleryPage() {
   const configured = isConfigured();
