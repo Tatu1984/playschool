@@ -224,3 +224,120 @@
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ============================================================
+   BEATS — Advanced Dance School
+   A deliberately separate visual system from the Climb Kiddo
+   playschool theme: dark studio ink, acid/violet/coral accents,
+   condensed display type, hard edges. Scoped to `.beats-scope`.
+   ============================================================ */
+
+@theme inline {
+  --color-bt-ink: #07070B;
+  --color-bt-coal: #0D0D14;
+  --color-bt-smoke: #15151F;
+  --color-bt-ash: #23232F;
+  --color-bt-bone: #F3F1EA;
+  --color-bt-acid: #D6FF3F;
+  --color-bt-violet: #7B5CFF;
+  --color-bt-coral: #FF4A6E;
+  --color-bt-cyan: #3CE7E0;
+
+  --font-display-beats: var(--font-anton);
+  --font-body-beats: var(--font-space);
+
+  --animate-beats-marquee: beats-marquee 30s linear infinite;
+  --animate-beats-pulse: beats-pulse 2.6s ease-in-out infinite;
+  --animate-beats-scan: beats-scan 7s linear infinite;
+  --animate-beats-beam: beats-beam 9s ease-in-out infinite;
+}
+
+@keyframes beats-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes beats-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+@keyframes beats-scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+@keyframes beats-beam {
+  0%, 100% { opacity: 0.25; transform: translateX(-6%) scaleY(1); }
+  50% { opacity: 0.7; transform: translateX(6%) scaleY(1.15); }
+}
+@keyframes beats-grain {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-2%, 1%); }
+  40% { transform: translate(1%, -2%); }
+  60% { transform: translate(-1%, -1%); }
+  80% { transform: translate(2%, 2%); }
+}
+
+.beats-scope {
+  --beats-bg: #07070B;
+  background-color: var(--beats-bg);
+  color: #F3F1EA;
+  font-family: var(--font-space), ui-sans-serif, system-ui;
+}
+.beats-scope h1,
+.beats-scope h2,
+.beats-scope h3,
+.beats-scope h4,
+.beats-scope h5 {
+  font-family: var(--font-anton), "Arial Narrow", ui-sans-serif, system-ui;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 0.92;
+}
+.beats-scope ::selection {
+  background: #D6FF3F;
+  color: #07070B;
+}
+
+.beats-display {
+  font-family: var(--font-anton), "Arial Narrow", ui-sans-serif, system-ui;
+  text-transform: uppercase;
+  line-height: 0.88;
+  letter-spacing: 0.005em;
+}
+
+.beats-kicker {
+  font-family: var(--font-space), ui-sans-serif, system-ui;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-weight: 500;
+}
+
+.beats-text-acid {
+  background: linear-gradient(100deg, #D6FF3F 0%, #3CE7E0 45%, #7B5CFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.beats-text-heat {
+  background: linear-gradient(100deg, #FF4A6E 0%, #7B5CFF 55%, #3CE7E0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.beats-outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(243, 241, 234, 0.42);
+}
+
+.beats-grid-lines {
+  background-image:
+    linear-gradient(to right, rgba(243, 241, 234, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(243, 241, 234, 0.055) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.beats-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  animation: beats-grain 0.9s steps(3) infinite;
+}

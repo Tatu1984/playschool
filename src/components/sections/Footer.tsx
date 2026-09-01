@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { Separator } from "@/components/ui/separator";
+import { BEATS_SITE_URL, isExternalUrl } from "@/lib/sites";
 import { Phone, Mail, MapPin } from "lucide-react";
 
 function Instagram({ className }: { className?: string }) {
@@ -88,11 +89,18 @@ export function Footer() {
                 ["FAQ", "/why-us"],
                 ["Admissions", "/contact"],
                 ["Contact", "/contact"],
+                ["Beats", BEATS_SITE_URL],
               ].map(([label, href]) => (
                 <li key={label}>
-                  <Link href={href} className="hover:text-ck-orange transition-colors">
-                    {label}
-                  </Link>
+                  {isExternalUrl(href) ? (
+                    <a href={href} className="hover:text-ck-orange transition-colors">
+                      {label}
+                    </a>
+                  ) : (
+                    <Link href={href} className="hover:text-ck-orange transition-colors">
+                      {label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

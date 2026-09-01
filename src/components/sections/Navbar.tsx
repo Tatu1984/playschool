@@ -9,8 +9,9 @@ import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { Menu, Phone, ChevronDown } from "lucide-react";
 import { Magnet } from "@/components/reactbits/Magnet";
 import { cn } from "@/lib/utils";
+import { BEATS_SITE_URL, isExternalUrl } from "@/lib/sites";
 
-type NavLeaf = { label: string; href: string };
+type NavLeaf = { label: string; href: string; brand?: "beats" };
 type NavGroup = { label: string; children: NavLeaf[] };
 type NavItem = NavLeaf | NavGroup;
 
@@ -18,6 +19,7 @@ const isGroup = (n: NavItem): n is NavGroup => "children" in n;
 
 const NAV: NavItem[] = [
   { label: "About", href: "/about" },
+  { label: "Beats", href: BEATS_SITE_URL, brand: "beats" },
   {
     label: "Programs",
     children: [
@@ -147,6 +149,46 @@ function MobileGroup({ group }: { group: NavGroup }) {
   );
 }
 
+/**
+ * Cross-brand entry point to Beats, the advanced dance academy.
+ * Deliberately styled in the Beats palette (ink + acid) so it reads as a
+ * different brand sitting inside the Climb Kiddo nav.
+ */
+function BeatsLink({
+  href,
+  className,
+}: {
+  href: string;
+  className?: string;
+}) {
+  const classes = cn(
+    "group inline-flex items-center gap-2 rounded-full bg-[#07070B] px-4 py-2 text-sm font-bold text-[#F3F1EA] transition-colors hover:bg-[#15151F]",
+    className,
+  );
+  const inner = (
+    <>
+      <span className="flex h-3.5 items-end gap-[2px]" aria-hidden>
+        <span className="w-[2px] rounded-full bg-[#FF4A6E] animate-beats-pulse" style={{ height: "45%" }} />
+        <span className="w-[2px] rounded-full bg-[#D6FF3F] animate-beats-pulse [animation-delay:-0.4s]" style={{ height: "100%" }} />
+        <span className="w-[2px] rounded-full bg-[#3CE7E0] animate-beats-pulse [animation-delay:-0.9s]" style={{ height: "65%" }} />
+      </span>
+      <span className="tracking-wide">Beats</span>
+    </>
+  );
+
+  // On production the Beats site lives on its own subdomain, so the link has
+  // to leave the router; locally it is just the /beats route.
+  return isExternalUrl(href) ? (
+    <a href={href} className={classes}>
+      {inner}
+    </a>
+  ) : (
+    <Link href={href} className={classes}>
+      {inner}
+    </Link>
+  );
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -173,6 +215,8 @@ export function Navbar() {
           {NAV.map((n) =>
             isGroup(n) ? (
               <NavDropdown key={n.label} group={n} />
+            ) : n.brand === "beats" ? (
+              <BeatsLink key={n.href} href={n.href} className="mx-1.5" />
             ) : (
               <Link
                 key={n.href}
@@ -221,6 +265,12 @@ export function Navbar() {
                 {NAV.map((n) =>
                   isGroup(n) ? (
                     <MobileGroup key={n.label} group={n} />
+                  ) : n.brand === "beats" ? (
+                    <BeatsLink
+                      key={n.href}
+                      href={n.href}
+                      className="my-1 w-full justify-center py-3"
+                    />
                   ) : (
                     <Link
                       key={n.href}
