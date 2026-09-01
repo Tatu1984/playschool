@@ -1,117 +1,138 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { SplitText } from "@/components/reactbits/SplitText";
-import { BlurText } from "@/components/reactbits/BlurText";
-import { GradientText } from "@/components/reactbits/GradientText";
-import { ShinyText } from "@/components/reactbits/ShinyText";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Aurora } from "@/components/reactbits/Aurora";
 import { FloatingShapes } from "@/components/reactbits/FloatingShapes";
-import { Magnet } from "@/components/reactbits/Magnet";
 import { ClickSpark } from "@/components/reactbits/ClickSpark";
-import { MascotPair } from "@/components/brand/MascotPair";
-import { Sparkles, Heart, Star, Phone } from "lucide-react";
+import { ClimbersSlide } from "@/components/sections/hero/ClimbersSlide";
+import { OlympiadSlide } from "@/components/sections/hero/OlympiadSlide";
+import { cn } from "@/lib/utils";
 
+const SLIDES = [
+  { key: "climbers", label: "Where little climbers grow big", Slide: ClimbersSlide },
+  { key: "olympiad", label: "All subject Olympiad exams", Slide: OlympiadSlide },
+];
+
+const INTERVAL = 7000;
+
+/**
+ * The hero is a slideshow. Both slides stay mounted and stacked in one grid
+ * cell, so the section keeps a single height and nothing below it shifts as
+ * the slides change; only opacity and a small offset animate.
+ */
 export function Hero() {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const touchX = useRef<number | null>(null);
+
+  const go = useCallback(
+    (next: number) => setIndex((next + SLIDES.length) % SLIDES.length),
+    [],
+  );
+
+  useEffect(() => {
+    if (paused) return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+    const id = setInterval(() => setIndex((i) => (i + 1) % SLIDES.length), INTERVAL);
+    return () => clearInterval(id);
+  }, [paused, index]);
+
   return (
-    <section className="relative isolate overflow-hidden pt-4 pb-24">
-      <Aurora className="opacity-70" />
-      <FloatingShapes />
+    <section
+      className="relative isolate overflow-hidden pt-4 pb-20"
+      aria-roledescription="carousel"
+      aria-label="Climb Kiddo highlights"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
+      onTouchStart={(e) => {
+        touchX.current = e.touches[0].clientX;
+      }}
+      onTouchEnd={(e) => {
+        if (touchX.current === null) return;
+        const dx = e.changedTouches[0].clientX - touchX.current;
+        if (Math.abs(dx) > 50) go(index + (dx < 0 ? 1 : -1));
+        touchX.current = null;
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowRight") go(index + 1);
+        if (e.key === "ArrowLeft") go(index - 1);
+      }}
+    >
+      <Aurora className="-z-10 opacity-70" />
+      {/* decorative shapes sit behind the copy so nothing overlaps the text */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <FloatingShapes />
+      </div>
 
-      <ClickSpark className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 pt-8 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:px-8 lg:pt-16">
-        <div className="lg:col-span-7 relative z-10">
-          <Badge
-            variant="secondary"
-            className="rounded-full bg-white/80 backdrop-blur px-4 py-1.5 text-ck-navy border border-ck-cream font-bold"
-          >
-            <Sparkles className="mr-1 h-3.5 w-3.5 text-ck-orange" />
-            <ShinyText>Admissions Open 2026–27</ShinyText>
-          </Badge>
-
-          <h1 className="mt-6 font-[family-name:var(--font-fredoka)] text-5xl font-bold leading-[1.05] tracking-tight text-ck-navy sm:text-6xl lg:text-7xl">
-            <SplitText as="span" text="Where little" className="block" />
-            <span className="block">
-              <GradientText>climbers</GradientText>{" "}
-              <SplitText as="span" text="grow big!" delay={0.4} />
-            </span>
-          </h1>
-
-          <BlurText
-            className="mt-6 max-w-xl text-lg leading-relaxed text-ck-navy/80"
-            text="A warm, safe, and playful home for curious kids — daycare, playschool & kids activity all in one happy place. Designed for tiny hearts, big smiles, and unforgettable first lessons."
-            delay={0.6}
-          />
-
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Magnet>
-              <Button
-                asChild
-                size="lg"
-                className="rounded-full bg-ck-red hover:bg-ck-red/90 px-8 py-6 text-base font-bold shadow-[0_6px_0_#9a1a28] hover:shadow-[0_3px_0_#9a1a28] hover:translate-y-[3px] transition-all"
+      <ClickSpark className="relative mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 lg:pt-14">
+        <div className="grid">
+          {SLIDES.map(({ key, label, Slide }, i) => {
+            const active = i === index;
+            return (
+              <div
+                key={key}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${i + 1} of ${SLIDES.length}: ${label}`}
+                aria-hidden={!active}
+                className={cn(
+                  "col-start-1 row-start-1 transition-all duration-700 ease-out",
+                  active
+                    ? "translate-x-0 opacity-100"
+                    : "pointer-events-none translate-x-4 opacity-0",
+                )}
               >
-                <Link href="#contact">
-                  <Heart className="mr-2 h-4 w-4" />
-                  Book a Free Visit
-                </Link>
-              </Button>
-            </Magnet>
-            <Magnet>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="rounded-full border-2 border-ck-navy/15 bg-white/70 backdrop-blur px-8 py-6 text-base font-bold text-ck-navy hover:bg-white"
-              >
-                <Link href="#programs">
-                  <Star className="mr-2 h-4 w-4 text-ck-orange" />
-                  Explore Programs
-                </Link>
-              </Button>
-            </Magnet>
-          </div>
-
-          <div className="mt-10 flex flex-wrap items-center gap-6">
-            <a
-              href="tel:+917003708969"
-              className="group flex items-center gap-3"
-            >
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ck-red text-white shadow-md transition-transform group-hover:scale-110">
-                <Phone className="h-5 w-5" />
-              </span>
-              <span className="flex flex-col">
-                <span className="text-xs font-semibold uppercase tracking-wider text-ck-navy/60">
-                  Talk to us
-                </span>
-                <span className="font-bold text-ck-navy">
-                  70037 08969 · 98314 40029
-                </span>
-              </span>
-            </a>
-
-            <div className="flex -space-x-2">
-              {["#DC2638", "#F39A1E", "#2BAEEC", "#8BC53F"].map((c) => (
-                <span
-                  key={c}
-                  className="h-9 w-9 rounded-full border-2 border-white shadow-sm"
-                  style={{ backgroundColor: c }}
-                />
-              ))}
-            </div>
-            <p className="text-sm font-semibold text-ck-navy/70">
-              <span className="text-ck-red font-extrabold">200+</span> happy
-              little climbers
-            </p>
-          </div>
+                <Slide active={active} />
+              </div>
+            );
+          })}
         </div>
 
-        <div className="lg:col-span-5 relative">
-          <div className="relative mx-auto max-w-md">
-            <div className="absolute -inset-8 rounded-[40%] bg-gradient-to-br from-ck-orange/40 via-ck-blue/30 to-ck-magenta/30 blur-3xl" />
-            <div className="absolute inset-0 -z-10 rounded-[40%] bg-white/40 backdrop-blur-sm" />
-            <MascotPair priority />
+        {/* controls */}
+        <div className="relative z-20 mt-10 flex items-center justify-center gap-5 lg:justify-start">
+          <button
+            type="button"
+            aria-label="Previous slide"
+            onClick={() => go(index - 1)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-ck-navy/12 bg-white/80 text-ck-navy shadow-sm backdrop-blur transition-colors hover:bg-white hover:text-ck-red"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+
+          <div className="flex items-center gap-2.5">
+            {SLIDES.map((s, i) => (
+              <button
+                key={s.key}
+                type="button"
+                onClick={() => go(i)}
+                aria-label={`Go to slide ${i + 1}: ${s.label}`}
+                aria-current={i === index}
+                className={cn(
+                  "h-2.5 rounded-full transition-all duration-300",
+                  i === index
+                    ? "w-9 bg-ck-red"
+                    : "w-2.5 bg-ck-navy/20 hover:bg-ck-navy/40",
+                )}
+              />
+            ))}
           </div>
+
+          <button
+            type="button"
+            aria-label="Next slide"
+            onClick={() => go(index + 1)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-ck-navy/12 bg-white/80 text-ck-navy shadow-sm backdrop-blur transition-colors hover:bg-white hover:text-ck-red"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
         </div>
       </ClickSpark>
     </section>
